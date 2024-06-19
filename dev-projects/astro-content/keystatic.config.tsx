@@ -1,11 +1,12 @@
 import { config, fields, collection } from '@keystatic/core';
+import { inline } from '../../packages/keystatic/src/content-components';
 
-const formatting = {
-  headingLevels: [2, 3],
-  blockTypes: true,
-  listTypes: true,
-  inlineMarks: true,
-} as const;
+// const formatting = {
+//   headingLevels: [2, 3],
+//   blockTypes: true,
+//   listTypes: true,
+//   inlineMarks: true,
+// } as const;
 
 export default config({
   storage: {
@@ -43,14 +44,33 @@ export default config({
         heroImage: fields.text({
           label: 'Hero Image',
         }),
-        content: fields.document({
+        content: fields.mdx({
           label: 'Content',
-          links: true,
-          layouts: [[1, 1]],
-          dividers: true,
-          tables: true,
-          formatting,
+          components: {
+            Footnote: inline({
+              label: 'Footnote',
+              schema: {
+                inlineText: fields.text({
+                  label: 'Inline Text',
+                  validation: {
+                    isRequired: true,
+                  },
+                }),
+                footNoteText: fields.mdx({
+                  label: 'Footnote Text',
+                }),
+              },
+            }),
+          },
         }),
+        // content: fields.document({
+        //   label: 'Content',
+        //   links: true,
+        //   layouts: [[1, 1]],
+        //   dividers: true,
+        //   tables: true,
+        //   formatting,
+        // }),
       },
     }),
   },
